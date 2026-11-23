@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#141414">
+<title>Ma collection</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+:root{--bg:#141414;--s1:#1c1c1c;--s2:#242424;--line:#2e2e2c;--tx:#F1EFE8;--mu:#8a8983;--ac:#EF9F27;--acd:#412402;--ok:#C0DD97;--okb:#1d3a0b;--wa:#FAC775;--wab:#3d2405;--no:#F09595}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--tx);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px}
+body{padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+button{font:inherit;color:inherit;cursor:pointer}
+input,select,textarea{font:inherit;color:var(--tx);background:var(--s2);border:1px solid var(--line);border-radius:10px;padding:0 12px;height:44px;width:100%;outline:none}
+textarea{height:80px;padding:10px 12px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--ac)}
+.wrap{max-width:560px;margin:0 auto;padding:16px 16px 110px}
+header{display:flex;justify-content:space-between;align-items:flex-end}
+.kick{font-size:11px;letter-spacing:2px;color:var(--mu);text-transform:uppercase}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:30px;margin:2px 0 0}
+.icb{background:var(--s1);border:1px solid var(--line);border-radius:50%;width:42px;height:42px;display:flex;align-items:center;justify-content:center;position:relative}
+.icb svg{width:20px;height:20px}
+.dot{position:absolute;top:6px;right:6px;width:9px;height:9px;border-radius:50%;background:var(--ac);display:none}
+.tabs{display:flex;gap:6px;margin:16px 0 12px}
+.tabs button{flex:1;background:var(--s1);border:1px solid var(--line);border-radius:22px;height:38px;font-size:14px;color:var(--mu)}
+.tabs button.on{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+.tabs small{opacity:.7;margin-left:3px}
+.search{position:sticky;top:0;z-index:5;background:var(--bg);padding:6px 0}
+.search input{height:50px;border-radius:14px;padding-left:44px;padding-right:44px;font-size:16px;background:var(--s1)}
+.search .lo{position:absolute;left:14px;top:21px;width:20px;height:20px;color:var(--mu)}
+input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;display:none}
+.search .clr{position:absolute;right:8px;top:13px;background:none;border:0;width:36px;height:36px;color:var(--mu);display:none}
+.ans{border-radius:14px;padding:12px 14px;font-size:15px;margin:6px 0;display:none;line-height:1.4}
+.bar{display:flex;justify-content:space-between;align-items:center;margin:8px 0 4px;color:var(--mu);font-size:13px}
+.bar select{width:auto;height:32px;font-size:13px;padding:0 8px;background:var(--s1)}
+.row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);width:100%;background:none;border-left:0;border-right:0;border-top:0;text-align:left}
+.th{width:44px;height:62px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;background-size:cover;background-position:center}
+.mid{flex:1;min-width:0}
+.t1{font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t2{font-size:12.5px;color:var(--mu);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st{color:var(--ac);font-size:12px;letter-spacing:1px;margin-top:3px}
+.pill{font-size:11px;padding:3px 9px;border-radius:12px;white-space:nowrap}
+.lb{font-size:10px;color:var(--mu);border:1px solid var(--line);border-radius:8px;padding:1px 6px;margin-left:6px;vertical-align:1px}
+.empty{color:var(--mu);text-align:center;padding:40px 10px;line-height:1.6}
+.fab{position:fixed;right:20px;bottom:calc(22px + env(safe-area-inset-bottom));width:62px;height:62px;border-radius:50%;background:var(--ac);color:var(--acd);border:0;font-size:32px;box-shadow:0 6px 20px rgba(0,0,0,.5);z-index:10}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:20;display:none;align-items:flex-end;justify-content:center}
+.ov.show{display:flex}
+.sh{background:var(--s1);width:100%;max-width:560px;max-height:94vh;overflow:auto;border-radius:20px 20px 0 0;padding:18px 18px calc(24px + env(safe-area-inset-bottom))}
+.sh h2{font-family:Georgia,serif;font-weight:400;font-size:22px;margin:0}
+.shh{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.x{background:none;border:0;font-size:26px;color:var(--mu);width:40px;height:40px}
+.ph{width:120px;height:170px;border-radius:8px;margin:0 auto 6px;background:var(--s2) center/cover;border:1px dashed #555;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--mu);font-size:13px;gap:6px}
+.phb{display:flex;justify-content:center;gap:14px;margin-bottom:12px;font-size:13px}
+.phb button{background:none;border:0;color:var(--ac);padding:6px}
+label.f{display:block;font-size:12px;color:var(--mu);margin:10px 0 5px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stars{display:flex;gap:4px}
+.stars button{background:none;border:0;font-size:30px;color:#4a4a46;padding:0 2px;line-height:1}
+.stars button.on{color:var(--ac)}
+.btn{display:block;width:100%;height:48px;border-radius:12px;border:0;font-size:15px;margin-top:10px}
+.pri{background:var(--tx);color:var(--bg);font-weight:600}
+.sec{background:var(--s2);border:1px solid var(--line)}
+.acc{background:var(--ac);color:var(--acd);font-weight:600}
+.dan{background:none;color:var(--no);border:1px solid #5a2a2a}
+.err{color:var(--no);font-size:13px;margin-top:6px;display:none}
+.card{background:var(--s2);border-radius:14px;padding:14px;margin-bottom:12px}
+.card p{margin:4px 0 0;color:var(--mu);font-size:13px;line-height:1.5}
+.card h3{margin:0;font-size:15px;font-weight:600}
+.toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:20px;font-size:14px;z-index:40;display:none;max-width:90vw;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div><div class="kick">Ma collection</div><h1 id="ttl">Films et livres</h1></div>
+    <button class="icb" id="bMenu" aria-label="Sauvegarde et réglages">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/><path d="M7 9l5-5 5 5"/><path d="M12 4v12"/></svg>
+      <span class="dot" id="dot"></span>
+    </button>
+  </header>
+
+  <div class="tabs" id="tabs">
+    <button data-l="films" class="on">Films<small id="n-films"></small></button>
+    <button data-l="livres">Livres<small id="n-livres"></small></button>
+    <button data-l="envies">Envies<small id="n-envies"></small></button>
+  </div>
+
+  <div class="search" style="position:sticky">
+    <div style="position:relative">
+      <svg class="lo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+      <input id="q" type="search" placeholder="Je l'ai déjà ? Tape un titre…" autocomplete="off" enterkeyhint="search">
+      <button class="clr" id="qx" aria-label="Effacer">✕</button>
+    </div>
+    <div class="ans" id="ans"></div>
+  </div>
+
+  <div class="bar"><span id="info"></span>
+    <select id="sort" aria-label="Trier">
+      <option value="az">A → Z</option>
+      <option value="new">Derniers ajouts</option>
+      <option value="note">Mieux notés</option>
+      <option value="prix">Prix payé</option>
+    </select>
+  </div>
+  <div id="list"></div>
+</div>
+
+<button class="fab" id="bAdd" aria-label="Ajouter">+</button>
+
+<!-- Fiche -->
+<div class="ov" id="ovItem"><div class="sh">
+  <div class="shh"><h2 id="itTitle">Ajouter</h2><button class="x" data-close aria-label="Fermer">×</button></div>
+  <div class="ph" id="phBox"><span style="font-size:26px">＋</span><span>Photo de la jaquette</span></div>
+  <div class="phb"><button id="bCam">Prendre une photo</button><button id="bGal">Galerie</button><button id="bPhDel" style="color:var(--no);display:none">Retirer</button></div>
+  <input type="file" id="fCam" accept="image/*" capture="environment" hidden>
+  <input type="file" id="fGal" accept="image/*" hidden>
+
+  <label class="f" for="iT">Titre</label><input id="iT" autocomplete="off">
+  <div class="err" id="eT">Entre un titre d'abord</div>
+  <label class="f" for="iS" id="lS">Autre titre / réalisateur</label><input id="iS" autocomplete="off">
+  <div class="two">
+    <div><label class="f" for="iL">Liste</label><select id="iL"><option value="films">Films</option><option value="livres">Livres photo</option><option value="envies">Envies</option></select></div>
+    <div><label class="f" for="iF">Format</label><select id="iF"><option>DVD</option><option>Blu-ray</option><option>4K</option><option>Coffret</option><option>Livre</option><option>Photo Poche</option><option>Autre</option></select></div>
+  </div>
+  <label class="f">Ma note</label><div class="stars" id="stars"></div>
+  <div class="two">
+    <div><label class="f" for="iP" id="lP">Prix payé (€)</label><input id="iP" type="text" inputmode="decimal" placeholder="0,00" autocomplete="off"></div>
+    <div><label class="f" for="iD">Date</label><input id="iD" type="date"></div>
+  </div>
+  <label class="f" for="iW" id="lW">Trouvé où</label><input id="iW" placeholder="Brocante, Emmaüs, librairie…" autocomplete="off">
+  <label class="f" for="iN">Notes</label><textarea id="iN" placeholder="Édition, état, à prêter à…"></textarea>
+
+  <button class="btn pri" id="bSave">Enregistrer</button>
+  <button class="btn acc" id="bGot" style="display:none">Je l'ai trouvé ! Passer dans ma collection</button>
+  <button class="btn dan" id="bDel" style="display:none">Supprimer</button>
+</div></div>
+
+<!-- Sauvegarde -->
+<div class="ov" id="ovMenu"><div class="sh">
+  <div class="shh"><h2>Sauvegarde</h2><button class="x" data-close aria-label="Fermer">×</button></div>
+  <div class="card" id="lastBk"></div>
+  <div class="card"><h3>Sauvegarde complète</h3><p>Tout, photos comprises. C'est ce fichier qu'il faut garder sur Google Drive pour pouvoir tout récupérer.</p>
+    <button class="btn acc" id="bBk">Créer la sauvegarde (.json)</button></div>
+  <div class="card"><h3>Export tableur</h3><p>Ta liste en CSV, lisible dans Google Sheets ou Excel. Sans les photos.</p>
+    <button class="btn sec" id="bCsv">Exporter en CSV</button></div>
+  <div class="card"><h3>Importer ou restaurer</h3><p>Un fichier .json remplace toute la collection par la sauvegarde. Un fichier .csv ajoute ses titres à ceux que tu as déjà, sans doublons.</p>
+    <button class="btn sec" id="bImp">Choisir un fichier</button>
+    <input type="file" id="fImp" accept=".json,.csv,text/csv,application/json" hidden></div>
+  <p style="color:var(--mu);font-size:12px;text-align:center;margin:14px 0 0">Tes données restent sur ce téléphone. Version 1.0</p>
+</div></div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm = s => String(s ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+const LISTS = {films:"Films", livres:"Livres photo", envies:"Envies"};
+const PAL = [["#712B13","#F5C4B3"],["#26215C","#CECBF6"],["#04342C","#9FE1CB"],["#633806","#FAC775"],["#72243E","#F4C0D1"],["#042C53","#B5D4F4"],["#3C3489","#EEEDFE"],["#444441","#D3D1C7"]];
+const PILL = {"DVD":["#333331","#D3D1C7"],"Blu-ray":["#0C447C","#B5D4F4"],"4K":["#26215C","#CECBF6"],"Coffret":["#72243E","#F4C0D1"],"Livre":["#085041","#9FE1CB"],"Photo Poche":["#633806","#FAC775"],"Autre":["#333331","#D3D1C7"]};
+
+/* ---------- stockage (IndexedDB) ---------- */
+let db, items = [];
+function openDB(){
+  return new Promise((ok, ko) => {
+    const r = indexedDB.open("ma-collection", 1);
+    r.onupgradeneeded = () => r.result.createObjectStore("items", {keyPath:"id"});
+    r.onsuccess = () => { db = r.result; ok(); };
+    r.onerror = () => ko(r.error);
+  });
+}
+const tx = (mode, fn) => new Promise((ok, ko) => {
+  const t = db.transaction("items", mode); const st = t.objectStore("items");
+  const res = fn(st); t.oncomplete = () => ok(res && res.result); t.onerror = () => ko(t.error);
+});
+const dbAll = () => tx("readonly", s => s.getAll());
+const dbPut = it => tx("readwrite", s => { s.put(it); });
+const dbDel = id => tx("readwrite", s => { s.delete(id); });
+const dbReplace = arr => tx("readwrite", s => { s.clear(); arr.forEach(i => s.put(i)); });
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+
+/* ---------- état ---------- */
+let tab = localStorage.getItem("tab") || "films";
+let sortBy = localStorage.getItem("sort") || "az";
+let editing = null, curPhoto = "", curNote = 0;
+
+/* ---------- rendu ---------- */
+const hash = s => { let x = 0; for (const c of s) x = (x * 31 + c.charCodeAt(0)) % 9973; return PAL[x % PAL.length]; };
+const ini = s => s.replace(/^(le |la |les |l'|l’|the |un |une )/i, "").split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join("").toUpperCase();
+const stars = n => n ? "★".repeat(n) + "☆".repeat(5 - n) : "";
+const euro = p => (p === "" || p == null || isNaN(p)) ? "" : (Math.round(p * 100) / 100).toLocaleString("fr-FR") + " €";
+
+function thumb(it){
+  if (it.photo) return `<div class="th" style="background-image:url('${it.photo}')"></div>`;
+  const c = hash(it.titre);
+  return `<div class="th" style="background:${c[0]};color:${c[1]}">${esc(ini(it.titre))}</div>`;
+}
+function rowHTML(it, showList){
+  const p = PILL[it.format] || PILL.Autre;
+  const sub = [it.sous, it.lieu].filter(Boolean).join(" · ");
+  return `<button class="row" data-id="${it.id}">${thumb(it)}
+    <div class="mid"><div class="t1">${esc(it.titre)}${showList ? `<span class="lb">${LISTS[it.liste]}</span>` : ""}</div>
+    <div class="t2">${esc(sub) || "&nbsp;"}</div>${it.note ? `<div class="st">${stars(it.note)}</div>` : ""}</div>
+    <span class="pill" style="background:${p[0]};color:${p[1]}">${esc(it.format)}</span></button>`;
+}
+function sorted(arr){
+  const a = arr.slice();
+  const az = (x, y) => x.titre.localeCompare(y.titre, "fr", {sensitivity:"base", numeric:true});
+  if (sortBy === "new") a.sort((x, y) => (y.ajoute || 0) - (x.ajoute || 0));
+  else if (sortBy === "note") a.sort((x, y) => (y.note || 0) - (x.note || 0) || az(x, y));
+  else if (sortBy === "prix") a.sort((x, y) => (+y.prix || 0) - (+x.prix || 0) || az(x, y));
+  else a.sort(az);
+  return a;
+}
+function render(){
+  for (const l in LISTS) $("n-" + l).textContent = items.filter(i => i.liste === l).length;
+  document.querySelectorAll("#tabs button").forEach(b => b.classList.toggle("on", b.dataset.l === tab));
+  const q = norm($("q").value);
+  $("qx").style.display = q ? "block" : "none";
+  const ans = $("ans");
+  let shown;
+  if (q){
+    const hits = items.filter(i => norm(i.titre + " " + i.sous).includes(q));
+    shown = sorted(hits);
+    const owned = hits.filter(i => i.liste !== "envies"), wish = hits.filter(i => i.liste === "envies");
+    if (q.length >= 2){
+      ans.style.display = "block";
+      if (owned.length){
+        ans.style.background = "var(--okb)"; ans.style.color = "var(--ok)";
+        ans.innerHTML = `<b>✓ Tu l'as déjà</b><br>${owned.slice(0, 3).map(i => esc(i.titre) + " (" + esc(i.format) + ")").join(", ")}${owned.length > 3 ? "…" : ""}`;
+      } else if (wish.length){
+        ans.style.background = "var(--wab)"; ans.style.color = "var(--wa)";
+        ans.innerHTML = `<b>★ Dans tes envies, fonce !</b><br>${wish.slice(0, 3).map(i => esc(i.titre)).join(", ")}`;
+      } else {
+        ans.style.background = "var(--wab)"; ans.style.color = "var(--wa)";
+        ans.innerHTML = `<b>Pas dans ta collection</b><br><span style="text-decoration:underline" id="qAdd">Ajouter « ${esc($("q").value.trim())} »</span>`;
+      }
+    } else ans.style.display = "none";
+    $("info").textContent = hits.length + " résultat" + (hits.length > 1 ? "s" : "") + " dans toutes les listes";
+  } else {
+    ans.style.display = "none";
+    shown = sorted(items.filter(i => i.liste === tab));
+    const tot = shown.reduce((s, i) => s + (+i.prix || 0), 0);
+    $("info").textContent = shown.length + " titre" + (shown.length > 1 ? "s" : "") + (tot ? " · " + euro(tot) + " dépensés" : "");
+  }
+  const L = $("list");
+  if (!shown.length){
+    L.innerHTML = q ? "" : (items.length ? `<div class="empty">Rien ici pour l'instant.<br>Appuie sur + pour ajouter un titre.</div>`
+      : `<div class="empty">Ta collection est vide.<br>Appuie sur + pour ajouter un titre,<br>ou importe ton fichier de départ<br>avec le bouton en haut à droite.</div>`);
+  } else L.innerHTML = shown.map(i => rowHTML(i, !!q)).join("");
+  const qa = $("qAdd"); if (qa) qa.onclick = () => openItem(null, $("q").value.trim());
+  checkBackupAge();
+}
+
+/* ---------- fiche ---------- */
+function drawStars(){
+  $("stars").innerHTML = [1,2,3,4,5].map(n => `<button type="button" data-n="${n}" class="${n <= curNote ? "on" : ""}" aria-label="${n} sur 5">★</button>`).join("");
+}
+function drawPhoto(){
+  const b = $("phBox");
+  if (curPhoto){ b.style.backgroundImage = `url('${curPhoto}')`; b.style.borderStyle = "solid"; b.innerHTML = ""; $("bPhDel").style.display = ""; }
+  else { b.style.backgroundImage = ""; b.style.borderStyle = "dashed"; b.innerHTML = '<span style="font-size:26px">＋</span><span>Photo de la jaquette</span>'; $("bPhDel").style.display = "none"; }
+}
+function labelsFor(l){
+  $("lS").textContent = l === "livres" ? "Photographe / auteur" : (l === "envies" ? "Réalisateur / photographe" : "Autre titre / réalisateur");
+  $("lP").textContent = l === "envies" ? "Prix max (€)" : "Prix payé (€)";
+  $("lW").textContent = l === "envies" ? "Vu où" : "Trouvé où";
+}
+function openItem(it, presetTitle){
+  editing = it;
+  const l = it ? it.liste : tab;
+  $("itTitle").textContent = it ? "Modifier" : "Ajouter";
+  $("iT").value = it ? it.titre : (presetTitle || "");
+  $("iS").value = it ? it.sous : "";
+  $("iL").value = l;
+  $("iF").value = it ? it.format : (l === "livres" ? "Livre" : "DVD");
+  $("iP").value = it && it.prix !== "" && it.prix != null ? String(it.prix).replace(".", ",") : "";
+  $("iD").value = it ? (it.date || "") : new Date().toISOString().slice(0, 10);
+  $("iW").value = it ? it.lieu : "";
+  $("iN").value = it ? it.notes : "";
+  curNote = it ? (it.note || 0) : 0; curPhoto = it ? (it.photo || "") : "";
+  $("eT").style.display = "none";
+  $("bDel").style.display = it ? "" : "none";
+  $("bGot").style.display = it && it.liste === "envies" ? "" : "none";
+  labelsFor(l); drawStars(); drawPhoto();
+  show("ovItem");
+  if (!it && !presetTitle) setTimeout(() => $("iT").focus(), 250);
+}
+function readForm(){
+  const p = $("iP").value.replace(/[€\s]/g, "").replace(",", ".");
+  const pn = parseFloat(p);
+  return {
+    titre: $("iT").value.trim(), sous: $("iS").value.trim(), liste: $("iL").value, format: $("iF").value,
+    note: curNote, prix: p === "" || isNaN(pn) ? "" : Math.round(pn * 100) / 100, date: $("iD").value,
+    lieu: $("iW").value.trim(), notes: $("iN").value.trim(), photo: curPhoto
+  };
+}
+async function save(extra){
+  const f = Object.assign(readForm(), extra || {});
+  if (!f.titre){ $("eT").style.display = "block"; $("iT").focus(); return; }
+  const it = editing ? Object.assign(editing, f) : Object.assign({id: uid(), ajoute: Date.now()}, f);
+  if (!editing) items.push(it);
+  await dbPut(it);
+  hide("ovItem");
+  if (!editing && !$("q").value) { tab = it.liste; localStorage.setItem("tab", tab); }
+  render(); toast(editing ? "Modifié" : "Ajouté à " + LISTS[it.liste]);
+}
+
+/* ---------- photo ---------- */
+function loadPhoto(file){
+  if (!file) return;
+  const img = new Image(), url = URL.createObjectURL(file);
+  img.onload = () => {
+    const max = 480, r = Math.min(1, max / Math.max(img.width, img.height));
+    const c = document.createElement("canvas"); c.width = Math.round(img.width * r); c.height = Math.round(img.height * r);
+    c.getContext("2d").drawImage(img, 0, 0, c.width, c.height);
+    curPhoto = c.toDataURL("image/jpeg", 0.78); URL.revokeObjectURL(url); drawPhoto();
+  };
+  img.onerror = () => toast("Impossible de lire cette image");
+  img.src = url;
+}
+
+/* ---------- CSV ---------- */
+const COLS = ["Liste","Titre","Autre titre / Auteur","Format","Note","Prix","Lieu","Date","Notes"];
+function toCSV(){
+  const q = v => { v = String(v ?? ""); return /[",;\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; };
+  const rows = sorted(items).sort((a, b) => Object.keys(LISTS).indexOf(a.liste) - Object.keys(LISTS).indexOf(b.liste));
+  return "﻿" + [COLS.join(",")].concat(rows.map(i =>
+    [LISTS[i.liste], i.titre, i.sous, i.format, i.note || "", i.prix === "" ? "" : String(i.prix).replace(".", ","), i.lieu, i.date, i.notes].map(q).join(","))).join("\r\n");
+}
+function parseCSV(text){
+  text = text.replace(/^﻿/, "");
+  const first = text.split(/\r?\n/)[0];
+  const sep = (first.match(/;/g) || []).length > (first.match(/,/g) || []).length ? ";" : ",";
+  const rows = []; let row = [], cur = "", inq = false;
+  for (let i = 0; i < text.length; i++){
+    const c = text[i];
+    if (inq){ if (c === '"'){ if (text[i + 1] === '"'){ cur += '"'; i++; } else inq = false; } else cur += c; }
+    else if (c === '"') inq = true;
+    else if (c === sep){ row.push(cur); cur = ""; }
+    else if (c === "\n" || c === "\r"){ if (c === "\r" && text[i + 1] === "\n") i++; row.push(cur); rows.push(row); row = []; cur = ""; }
+    else cur += c;
+  }
+  if (cur || row.length){ row.push(cur); rows.push(row); }
+  return rows.filter(r => r.some(x => x.trim()));
+}
+function csvToItems(text){
+  const rows = parseCSV(text); if (rows.length < 2) return [];
+  const h = rows[0].map(norm);
+  const col = (...names) => h.findIndex(x => names.some(n => x.startsWith(n)));
+  const c = {l: col("liste"), t: col("titre"), s: col("autre", "auteur", "photographe", "realisateur"), f: col("format"),
+    n: col("note"), p: col("prix"), w: col("lieu", "trouve", "vu ou"), d: col("date"), x: col("notes", "commentaire")};
+  if (c.t < 0) return [];
+  const g = (r, k) => k >= 0 ? (r[k] || "").trim() : "";
+  const now = Date.now();
+  return rows.slice(1).map((r, k) => {
+    const ln = norm(g(r, c.l));
+    const liste = ln.startsWith("livre") ? "livres" : ln.startsWith("envie") ? "envies" : "films";
+    const fmt = g(r, c.f) || (liste === "livres" ? "Livre" : "DVD");
+    const p = g(r, c.p).replace(/[€\s]/g, "").replace(",", ".");
+    return {id: uid() + k, ajoute: now - k, liste, titre: g(r, c.t), sous: g(r, c.s), format: PILL[fmt] ? fmt : "Autre",
+      note: Math.max(0, Math.min(5, parseInt(g(r, c.n)) || 0)), prix: p === "" || isNaN(+p) ? "" : +p,
+      lieu: g(r, c.w), date: g(r, c.d), notes: g(r, c.x), photo: ""};
+  }).filter(i => i.titre);
+}
+
+/* ---------- fichiers ---------- */
+async function giveFile(content, name, type){
+  const file = new File([content], name, {type});
+  try {
+    if (navigator.canShare && navigator.canShare({files: [file]})){ await navigator.share({files: [file], title: name}); return true; }
+  } catch (e){ if (e.name === "AbortError") return false; }
+  const a = document.createElement("a"); a.href = URL.createObjectURL(file); a.download = name;
+  document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
+  return true;
+}
+const stamp = () => new Date().toISOString().slice(0, 10);
+async function backup(){
+  const data = JSON.stringify({app: "ma-collection", version: 1, date: new Date().toISOString(), items}, null, 1);
+  if (await giveFile(data, `ma-collection-sauvegarde-${stamp()}.json`, "application/json")){
+    localStorage.setItem("lastBackup", Date.now()); renderBackup(); checkBackupAge(); toast("Sauvegarde créée");
+  }
+}
+async function exportCSV(){
+  if (await giveFile(toCSV(), `ma-collection-${stamp()}.csv`, "text/csv")) toast("Export CSV créé");
+}
+async function importFile(file){
+  if (!file) return;
+  const text = await file.text();
+  try {
+    if (/\.json$/i.test(file.name) || text.trim().startsWith("{")){
+      const d = JSON.parse(text);
+      if (!d || !Array.isArray(d.items)) throw new Error("format");
+      if (!confirm(`Remplacer toute ta collection (${items.length} titres) par cette sauvegarde (${d.items.length} titres) ?`)) return;
+      items = d.items.map(i => Object.assign({sous:"", format:"DVD", note:0, prix:"", lieu:"", date:"", notes:"", photo:""}, i, {id: i.id || uid()}));
+      await dbReplace(items); toast("Collection restaurée : " + items.length + " titres");
+    } else {
+      const add = csvToItems(text);
+      if (!add.length){ toast("Aucun titre trouvé dans ce fichier"); return; }
+      const have = new Set(items.map(i => i.liste + "|" + norm(i.titre)));
+      const fresh = add.filter(i => !have.has(i.liste + "|" + norm(i.titre)));
+      items = items.concat(fresh);
+      await dbReplace(items);
+      toast(fresh.length + " titre" + (fresh.length > 1 ? "s" : "") + " ajouté" + (fresh.length > 1 ? "s" : "") + (add.length - fresh.length ? ", " + (add.length - fresh.length) + " déjà présents" : ""));
+    }
+    hide("ovMenu"); render();
+  } catch (e){ toast("Ce fichier n'est pas lisible"); }
+}
+function renderBackup(){
+  const t = +localStorage.getItem("lastBackup");
+  const d = t ? Math.floor((Date.now() - t) / 864e5) : null;
+  $("lastBk").innerHTML = `<h3>${t ? (d === 0 ? "Dernière sauvegarde aujourd'hui" : `Dernière sauvegarde il y a ${d} jour${d > 1 ? "s" : ""}`) : "Aucune sauvegarde pour l'instant"}</h3>
+    <p>${items.length} titres, dont ${items.filter(i => i.photo).length} avec photo. Pense à sauvegarder après une bonne session de chine.</p>`;
+}
+function checkBackupAge(){
+  const t = +localStorage.getItem("lastBackup");
+  $("dot").style.display = items.length && (!t || Date.now() - t > 30 * 864e5) ? "block" : "none";
+}
+
+/* ---------- interface ---------- */
+function show(id){ $(id).classList.add("show"); document.body.style.overflow = "hidden"; }
+function hide(id){ $(id).classList.remove("show"); document.body.style.overflow = ""; }
+let tt; function toast(m){ const t = $("toast"); t.textContent = m; t.style.display = "block"; clearTimeout(tt); tt = setTimeout(() => t.style.display = "none", 2600); }
+
+$("tabs").onclick = e => { const b = e.target.closest("button"); if (!b) return; tab = b.dataset.l; localStorage.setItem("tab", tab); $("q").value = ""; render(); };
+$("q").oninput = render;
+$("qx").onclick = () => { $("q").value = ""; render(); $("q").focus(); };
+$("sort").value = sortBy;
+$("sort").onchange = () => { sortBy = $("sort").value; localStorage.setItem("sort", sortBy); render(); };
+$("list").onclick = e => { const r = e.target.closest(".row"); if (r) openItem(items.find(i => i.id === r.dataset.id)); };
+$("bAdd").onclick = () => openItem(null);
+$("bMenu").onclick = () => { renderBackup(); show("ovMenu"); };
+document.querySelectorAll("[data-close]").forEach(b => b.onclick = () => hide(b.closest(".ov").id));
+document.querySelectorAll(".ov").forEach(o => o.addEventListener("click", e => { if (e.target === o) hide(o.id); }));
+$("stars").onclick = e => { const b = e.target.closest("button"); if (!b) return; const n = +b.dataset.n; curNote = curNote === n ? 0 : n; drawStars(); };
+$("iL").onchange = () => { labelsFor($("iL").value); if ($("iL").value === "livres" && !["Livre","Photo Poche"].includes($("iF").value)) $("iF").value = "Livre"; };
+$("iT").oninput = () => $("eT").style.display = "none";
+$("bCam").onclick = () => $("fCam").click();
+$("bGal").onclick = () => $("fGal").click();
+$("phBox").onclick = () => $("fCam").click();
+$("fCam").onchange = e => { loadPhoto(e.target.files[0]); e.target.value = ""; };
+$("fGal").onchange = e => { loadPhoto(e.target.files[0]); e.target.value = ""; };
+$("bPhDel").onclick = () => { curPhoto = ""; drawPhoto(); };
+$("bSave").onclick = () => save();
+$("bGot").onclick = () => save({liste: ["Livre","Photo Poche"].includes($("iF").value) ? "livres" : "films", date: new Date().toISOString().slice(0, 10)});
+$("bDel").onclick = async () => {
+  if (!editing || !confirm(`Supprimer « ${editing.titre} » ?`)) return;
+  await dbDel(editing.id); items = items.filter(i => i !== editing); hide("ovItem"); render(); toast("Supprimé");
+};
+$("bBk").onclick = backup;
+$("bCsv").onclick = exportCSV;
+$("bImp").onclick = () => $("fImp").click();
+$("fImp").onchange = e => { importFile(e.target.files[0]); e.target.value = ""; };
+
+/* ---------- démarrage ---------- */
+(async () => {
+  try { await openDB(); items = await dbAll(); }
+  catch (e){ $("list").innerHTML = '<div class="empty">Le stockage du navigateur n\'est pas disponible.</div>'; return; }
+  if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {});
+  render();
+})();
+if ("serviceWorker" in navigator) window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+</script>
+</body>
+</html>
